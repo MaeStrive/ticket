@@ -2,7 +2,7 @@
     <div class="bar-bd">
         <img
           class="logo"
-          src="https://img.alicdn.com/tfs/TB19yBbRSzqK1RjSZFLXXcn2XXa-230-104.png"
+          src="../../img/logo.png"
           alt
         >
         <el-button>中文</el-button>

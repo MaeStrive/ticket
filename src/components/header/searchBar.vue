@@ -8,6 +8,7 @@
         @focus="focus"
         @blur="blur"
         @input="input"
+        style="width: 300px"
       ></el-input>
       <el-button type="primary">搜索</el-button>
       <dl class="hotSinger" v-if="isHotSinger">
@@ -76,7 +77,7 @@ export default {
   width: 60%;
   height: 44px;
   margin-top: 26px;
-  margin-left: 102px;
+  margin-left: 42px;
   .wrapper {
     width: 401px;
     height: 44px;

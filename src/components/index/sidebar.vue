@@ -3,15 +3,15 @@
     <div class="item">
       <a href="#">
         <div class="icon service"></div>
-        <p>在线客服</p>
+        <p>公告</p>
       </a>
     </div>
-    <div class="item">
-      <a href="#">
-        <div class="icon damai"></div>
-        <p>APP下载</p>
-      </a>
-    </div>
+<!--    <div class="item">-->
+<!--      <a href="#">-->
+<!--        <div class="icon damai"></div>-->
+<!--        <p>APP下载</p>-->
+<!--      </a>-->
+<!--    </div>-->
     <div class="item goTop" v-show="isTop">
       <a href="#" @click="goTop">
         <div class="icon totop"></div>

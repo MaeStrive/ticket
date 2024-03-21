@@ -1,8 +1,8 @@
 <template>
   <div class="left-bar">
-    <img src="https://img.alicdn.com/tfs/TB1fbVFfu3tHKVjSZSgXXX4QFXa-230-104.png" alt>
+    <img src="../../img/logo.png" alt style="width:40px">
     <i class="el-icon-location-outline"></i>
-      <router-link class="changeCity" :to="{name:'changeCity'}">北京</router-link>
+      <router-link class="changeCity" :to="{name:'changeCity'}">山东</router-link>
     <router-link class="homePage fontColor active" :to="{name:'defaultPage'}">首页</router-link>
     <router-link class="sort fontColor" :to="{name:'sort', params:{name:'sort'}}">分类</router-link>
   </div>
