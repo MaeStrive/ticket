@@ -7,42 +7,42 @@
       </div>
       <div class="box">
         <div class="box-left">
-          <router-link :to="{name: 'details', params: {name: item.box_left.title}}">
-            <img class="box-left-bg" :src="item.box_left.img_bg">
+            <router-link :to="{name: 'details', params: {id: item.leftTicket.id}}">
+            <img class="box-left-bg" :src="item.leftTicket.imgPath">
           </router-link>
           <div class="box-left-info">
-            <div class="title">{{ item.box_left.title }}</div>
+            <div class="title">{{ item.leftTicket.name }}</div>
             <div class="details">
-              ¥{{ item.box_left.price }}
+              ¥{{ item.leftTicket.price.split(',')[0] }}
               <span>起</span>
             </div>
           </div>
         </div>
         <div class="box-right">
-          <div class="box-right-item" v-for="(v,i) in item.box_right" :key="i">
+          <div class="box-right-item" v-for="(v,i) in item.rightList" :key="i">
             <div class="item-img">
-              <router-link :to="{name: 'details', params: {name: v.item_title}}">
-                <img :src="v.item_img">
+              <router-link :to="{name: 'details', params: {id: v.id}}">
+                <img :src="v.imgPath">
               </router-link>
             </div>
             <div class="item-info">
               <div class="title">
                 <router-link
-                  :to="{name: 'details', params: {name: v.item_title}}"
-                >{{ v.item_title }}</router-link>
+                  :to="{name: 'details', params: {id: v.id}}"
+                >{{ v.name }}</router-link>
               </div>
               <div class="venue">
-                <router-link :to="{name: 'details', params: {name: v.item_title}}">{{ v.item_venue}}</router-link>
+                <router-link :to="{name: 'details', params: {id: v.id}}">{{ v.address}}</router-link>
               </div>
               <div class="showtime">
                 <router-link
-                  :to="{name: 'details', params: {name: v.item_title}}"
-                >{{ v.item_showTime }}</router-link>
+                  :to="{name: 'details', params: {id: v.id}}"
+                >{{ v.showTime }}</router-link>
               </div>
 
               <div class="price">
-                <router-link :to="{name: 'details', params: {name: v.item_title}}">
-                  ¥{{ v.item_price}}
+                <router-link :to="{name: 'details', params: {id: v.id}}">
+                  ¥{{ v.price.split(",")[0]}}
                   <span>起</span>
                 </router-link>
               </div>

@@ -91,7 +91,8 @@ export default {
       request.post('/commonUser/login', commonUser).then(res => {
         if (res.code == 0) {
           this.$store.commit("setUserInfo", res.data)
-          // let userInfo = this.$store.getters.getUserInfo
+          let userInfo = this.$store.getters.getUserInfo
+          console.log(userInfo)
           this.$router.push({name: 'index'})
         } else {
           alert(res.msg)

@@ -2,11 +2,13 @@
 
 import Vue from 'vue'
 import VueX from 'vuex'
+import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(VueX)
 export default new VueX.Store({
+  plugins: [createPersistedState()],
   state: {
-    city: '北京',
+    city: '山东',
     userName: '',
     userInfo: {
       username: '',

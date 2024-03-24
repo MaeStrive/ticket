@@ -10,23 +10,24 @@
       <m-content :content="contentList"/>
     </el-row>
     <el-row>
-        <sidebar />
+      <sidebar/>
     </el-row>
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 import Swiper from '@/components/index/swiper'
 import Categroy from '@/components/index/categroy'
 import MContent from '@/components/index/content'
 import Sidebar from '@/components/index/sidebar'
 import api from '@/api/getData'
-export default {
-  data () {
-    return {
-      contentList: [
+import request from "../util/axios";
 
-      ]
+export default {
+  data() {
+    return {
+      contentList: []
     }
   },
   components: {
@@ -35,10 +36,13 @@ export default {
     MContent,
     Sidebar
   },
-  created () {
-    api.getContent().then(res => {
-      // console.log(res.data.contentList)
-      this.contentList = res.data.contentList
+  created() {
+    // api.getContent().then(res => {
+    //   // console.log(res.data.contentList)
+    //   this.contentList = res.data.contentList
+    // })
+    request.get('/ticket/listTicketIndex').then(res => {
+      this.contentList = res.data
     })
   }
 }
