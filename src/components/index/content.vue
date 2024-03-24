@@ -2,14 +2,15 @@
   <div class="dm-content-wrapper">
     <div class="dm-content" v-for="(item,index) in content" :key="index">
       <div class="head">
-        <span class="head-title">{{item.title }}</span>
+        <span class="head-title">{{ item.title }}</span>
         <span class="head-more">查看全部</span>
       </div>
       <div class="box">
-        <div class="box-left">
-            <router-link :to="{name: 'details', params: {id: item.leftTicket.id}}">
+        <div class="box-left" @click="toDetails(item.leftTicket.id)" style="cursor: pointer;">
+          <!--            <router-link :to="{name: 'details', params: {id: item.leftTicket.id}}">-->
+          <div>
             <img class="box-left-bg" :src="item.leftTicket.imgPath">
-          </router-link>
+          </div>
           <div class="box-left-info">
             <div class="title">{{ item.leftTicket.name }}</div>
             <div class="details">
@@ -29,20 +30,22 @@
               <div class="title">
                 <router-link
                   :to="{name: 'details', params: {id: v.id}}"
-                >{{ v.name }}</router-link>
+                >{{ v.name }}
+                </router-link>
               </div>
               <div class="venue">
-                <router-link :to="{name: 'details', params: {id: v.id}}">{{ v.address}}</router-link>
+                <router-link :to="{name: 'details', params: {id: v.id}}">{{ v.address }}</router-link>
               </div>
               <div class="showtime">
                 <router-link
                   :to="{name: 'details', params: {id: v.id}}"
-                >{{ v.showTime }}</router-link>
+                >{{ v.showTime }}
+                </router-link>
               </div>
 
               <div class="price">
                 <router-link :to="{name: 'details', params: {id: v.id}}">
-                  ¥{{ v.price.split(",")[0]}}
+                  ¥{{ v.price.split(",")[0] }}
                   <span>起</span>
                 </router-link>
               </div>
@@ -54,8 +57,23 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
+import request from "../../util/axios";
+
 export default {
-  props: ['content']
+  props: ['content'],
+  data() {
+    return {}
+  },
+  methods: {
+    toDetails(id) {
+      request.get('/ticket/getTicketById',{params:{id:id}}).then(res => {
+        console.log(res.data)
+        this.$router.push({name: 'details',params: {detailsInfo: res.data}})
+      })
+    }
+
+  }
 }
 </script>
 
@@ -68,11 +86,13 @@ export default {
     font-size: 0;
     height: 457px;
     border: 1px solid #ebebeb;
+
     .head {
       width: 100%;
       height: 40px;
       line-height: 40px;
       margin-top: 10px;
+
       .head-title {
         font-size: 24px;
         display: inline-block;
@@ -83,6 +103,7 @@ export default {
         height: 40px;
         overflow: hidden;
       }
+
       .head-more {
         display: inline-block;
         vertical-align: middle;
@@ -93,22 +114,26 @@ export default {
         max-width: 450px;
         height: 100%;
         overflow: hidden;
+
         &:hover {
           color: #ff1268;
           cursor: pointer;
         }
       }
     }
+
     .box {
       width: 1160px;
       height: 360px;
       margin: 10px auto;
+
       .box-left {
         display: inline-block;
         width: 270px;
         height: 360px;
         position: relative;
         overflow: hidden;
+
         .box-left-bg {
           width: 100%;
           position: absolute;
@@ -116,6 +141,7 @@ export default {
           top: 0;
           border: 1px solid #efefef;
         }
+
         .box-left-info {
           width: 250px;
           height: 84px;
@@ -124,22 +150,26 @@ export default {
           left: 0;
           padding: 17px 10px;
           background-color: rgba(0, 0, 0, 0.5);
+
           .title {
             height: 45px;
             font-size: 16px;
             color: #fff;
             overflow: hidden;
           }
+
           .details {
             margin-top: 12px;
             font-size: 20px;
             color: #fff;
+
             span {
               font-size: 14px;
             }
           }
         }
       }
+
       .box-right {
         display: inline-block;
         width: 870px;
@@ -147,6 +177,7 @@ export default {
         height: 360px;
         vertical-align: top;
         overflow: hidden;
+
         .box-right-item {
           width: 273px;
           height: 160px;
@@ -156,6 +187,7 @@ export default {
           margin-bottom: 40px;
           color: #000;
           overflow: hidden;
+
           .item-img {
             width: 118px;
             height: 158px;
@@ -163,10 +195,12 @@ export default {
             position: relative;
             display: inline-block;
             border: 1px solid #efefef;
+
             img {
               width: 100%;
             }
           }
+
           .item-info {
             width: 138px;
             height: 100%;
@@ -174,41 +208,52 @@ export default {
             padding-left: 15px;
             display: inline-block;
             vertical-align: top;
+
             a {
               text-decoration: none;
             }
+
             .title {
               line-height: 20px;
               font-size: 14px;
+
               > a {
                 color: #4a4a4a;
+
                 &:hover {
                   color: #ff1268;
                 }
               }
             }
+
             .venue {
               font-size: 12px;
               margin-top: 14px;
               overflow: hidden;
+
               > a {
                 color: #9b9b9b;
+
                 &:hover {
                   color: #ff1268;
                 }
               }
             }
+
             .showtime {
               font-size: 12px;
               margin-top: 7px;
               overflow: hidden;
+
               > a {
                 color: #9b9b9b;
+
                 &:hover {
                   color: #ff1268;
                 }
               }
             }
+
             .price {
               width: 138px;
               position: absolute;
@@ -216,9 +261,11 @@ export default {
               bottom: 0;
               font-size: 16px;
               white-space: nowrap;
+
               > a {
                 color: #ff1268;
               }
+
               span {
                 font-size: 12px;
               }

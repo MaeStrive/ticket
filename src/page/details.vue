@@ -8,17 +8,17 @@
             <img
               alt
               class="poster"
-              :src="item.coverSrc"
+              :src="item.imgPath"
             >
           </div>
           <div class="order">
             <div class="title">
-              <span>{{ item.title }}</span>
+              <span>{{ item.name }}</span>
             </div>
             <div class="address">
-              <div class="time">{{ item.time }}</div>
+              <div class="time">{{ item.showtime }}</div>
               <div class="place">
-                <div class="addr">{{ item.addr }}</div>
+                <div class="addr">{{ item.address }}</div>
                 <a class="mapicon">
                   <i class="el-icon-location-information"></i>
                 </a>
@@ -30,7 +30,8 @@
                 <div>本商品为预售商品，正式开票后将第一时间为您配票</div>
                 <div
                   class="notice-detail"
-                >预售期间，由于主办未正式开票，下单后无法立即为您配票。一般于演出前2-6周开票，待正式开票后，请您通过订单详情页或者票夹详情，查看票品信息、取票方式等演出相关信息</div>
+                >预售期间，由于主办未正式开票，下单后无法立即为您配票。一般于演出前2-6周开票，待正式开票后，请您通过订单详情页或者票夹详情，查看票品信息、取票方式等演出相关信息
+                </div>
               </div>
             </div>
             <div class="buy-ticket">
@@ -45,13 +46,13 @@
                 <div class="select-left">场次</div>
                 <div class="select-right">
                   <div class="list-item">
-                    <span class="presell">{{ item.presell.title }}</span>
-                    <span>{{ item.presell.time }}</span>
+                    <span class="presell">直售</span>
+                    <span>{{ item.showtime }}</span>
                   </div>
                 </div>
               </div>
               <div class="ticket-select">
-                <select-right :ticket="item.tickSelect"/>
+                <select-right :ticket="item.price"/>
               </div>
             </div>
           </div>
@@ -67,29 +68,38 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 import selectRight from '@/components/details/selectRight'
 import noticeNav from '@/components/details/noticeNav'
 import service from '@/components/details/service'
 import api from '@/api/getData'
+
 export default {
   components: {
     selectRight,
     noticeNav,
     service
   },
-  data () {
+  data() {
     return {
-      performInfo: []
+      performInfo: [],
+      detailsInfo: ''
     }
   },
-  created () {
-    api.getSort().then(res => {
-      // console.log(res.data.performInfo)
-      this.performInfo = res.data.performInfo
-    })
+  created() {
+    this.detailsInfo = this.$route.params.detailsInfo;
+    console.log(this.detailsInfo)
+    this.performInfo.push(this.detailsInfo)
+    // api.getSort().then(res => {
+    //   // console.log(res.data.performInfo)
+    //   this.performInfo = res.data.performInfo
+    // })
+  },
+  mounted() {
+
   },
   methods: {
-    handleClick (e) {
+    handleClick(e) {
       // console.log(e)
     }
   }
@@ -99,19 +109,23 @@ export default {
 <style lang="scss" scoped>
 .sort {
   margin-bottom: 64px;
+
   .perform {
     width: 1252px;
     // border: 1px solid #000;
     display: flex;
     margin: 0 auto;
+
     .content-left {
       flex: 1;
+
       .content-head {
         position: relative;
         padding: 40px 0 60px;
         min-height: 360px;
         font-size: 22px;
         color: #000;
+
         .cover {
           .tip {
             position: absolute;
@@ -128,6 +142,7 @@ export default {
             border-top-left-radius: 3px;
             border-top-right-radius: 3px;
           }
+
           .poster {
             position: absolute;
             width: 270px;
@@ -136,6 +151,7 @@ export default {
             top: 40px;
           }
         }
+
         .order {
           width: 550px;
           height: 780px;
@@ -148,13 +164,16 @@ export default {
             color: #4a4a4a;
             margin-top: 21px;
             zoom: 1;
+
             .time {
               padding-bottom: 10px;
             }
+
             .place {
               .addr {
                 display: inline-block;
               }
+
               .mapicon {
                 margin-left: 15px;
                 cursor: pointer;
@@ -164,6 +183,7 @@ export default {
               }
             }
           }
+
           .notice {
             margin-top: 18px;
             padding: 12px 15px;
@@ -171,6 +191,7 @@ export default {
             background: #f6f6f6;
             border-radius: 4px;
             position: relative;
+
             .notice-prefix {
               display: inline-block;
               height: 24px;
@@ -183,15 +204,18 @@ export default {
               margin-bottom: 10px;
               font-size: 14px;
             }
+
             .notice-detail {
               color: #999;
             }
           }
+
           .buy-ticket {
             .perform-time {
               color: #999;
               font-size: 12px;
               margin: 24px 0 9px;
+
               .perform-time-icon {
                 position: relative;
                 top: 2px;
@@ -200,19 +224,23 @@ export default {
                 margin-right: 3px;
               }
             }
+
             .perform-select {
               display: flex;
+
               .select-left {
                 display: inline-block;
                 font-size: 16px;
                 color: #4a4a4a;
                 height: 48px;
               }
+
               .select-right {
                 display: inline-block;
                 vertical-align: top;
                 margin-left: 15px;
                 flex: 1;
+
                 .list-item {
                   position: relative;
                   display: flex;
@@ -228,6 +256,7 @@ export default {
                   color: #ff1268;
                   background: #ffeaf1;
                   outline-color: #ffeaf1;
+
                   .presell {
                     display: block;
                     position: absolute;
@@ -243,17 +272,20 @@ export default {
               }
             }
           }
+
           .ticket-select {
             margin-top: 15px;
           }
         }
       }
+
       .content-notice {
         width: 896px;
         height: 3034px;
         // border: 1px solid red;
       }
     }
+
     .content-right {
       padding: 40px 18px 0;
     }

@@ -49,15 +49,18 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
 import barBd from '@/components/public/barBd'
 import MFooter from '@/components/footer/footer'
 import api from '@/api/getData.js'
+import request from "../util/axios";
+
 export default {
   components: {
     barBd,
     MFooter
   },
-  data () {
+  data() {
     var validateName = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入用户名'))
@@ -93,35 +96,49 @@ export default {
         name: ''
       },
       rules: {
-        pass: [{ validator: validatePass, trigger: 'blur' }],
-        checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-        name: [{ validator: validateName, trigger: 'blur' }]
+        pass: [{validator: validatePass, trigger: 'blur'}],
+        checkPass: [{validator: validatePass2, trigger: 'blur'}],
+        name: [{validator: validateName, trigger: 'blur'}]
       },
       strengthClass: ''
     }
   },
   methods: {
-    submitForm (formName) {
+    submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          api
-            .getRegister({
-              params: this.ruleForm
-            })
-            .then(res => {
-              if (res.data.register[0].status === 'success') {
-                this.$router.push({ name: 'login' })
-              }
-            })
+          let commuser = {
+            username: this.ruleForm.name,
+            password: this.ruleForm.pass
+          }
+          request.post('/commonUser/register', commuser).then(res => {
+            if (res.code == 0) {
+              alert("注册成功")
+              this.$router.push({name: 'login'})
+
+            } else {
+              alert(res.msg)
+            }
+
+          })
+          // api
+          //   .getRegister({
+          //     params: this.ruleForm
+          //   })
+          //   .then(res => {
+          //     if (res.data.register[0].status === 'success') {
+          //       this.$router.push({ name: 'login' })
+          //     }
+          //   })
         } else {
           alert('error submit!!')
         }
       })
     },
-    resetForm (formName) {
+    resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    handleInput () {
+    handleInput() {
       var regStr = /(\w)+/g // 大小写数字_汉字
       var regNum = /(\d)+/g // 匹配数字
       var reg = /_/g
@@ -152,12 +169,14 @@ export default {
     padding-top: 40px;
     width: 100%;
     height: 580px;
+
     .register-box {
       width: 1200px;
       height: 580px;
       background-color: #fff;
       margin: 0 auto;
       border: 1px solid #fff;
+
       .form {
         width: 720px;
         height: 347px;
@@ -175,35 +194,42 @@ export default {
           border-width: 1px;
         }
       }
+
       .pw-strength {
         position: relative;
         width: 330px;
         top: -4px;
         left: 85px;
         background: #eee;
+
         .bar {
           background: #d3ebee;
           height: 20px;
           width: 0;
           overflow: hidden;
           transition: all 0.4s linear;
+
           &.week {
             width: 108px;
             background: #f76120;
           }
+
           &.normal {
             width: 218px;
             background: #ff8900;
           }
+
           &.strong {
             width: 330px;
             background: #5bab3c;
           }
         }
+
         .letter {
           position: absolute;
           top: 0;
           left: 0;
+
           span {
             display: block;
             float: left;
