@@ -2,16 +2,23 @@
   <div class="ticket">
     <span class="select-left">票档</span>
     <div class="select-right">
+      <!--      <div-->
+      <!--        class="list-item"-->
+      <!--        :class="{active:item.isNoTicket}"-->
+      <!--        v-for="(item, index) in priceVOList"-->
+      <!--        :key="index"-->
+      <!--        @click="handleClick"-->
+      <!--        :data-price="item.price"-->
+      <!--      >-->
       <div
         class="list-item"
-        :class="{active:item.isNoTicket}"
         v-for="(item, index) in ticket"
         :key="index"
-        @click="handleClick"
-        :data-price="item.price"
+        @click="handleClick(index,$event)"
+        :class="{ active: activeIndex === index }"
       >
-        <span class="notticket" :class="{active:item.isNoTicket}" v-if="item.isNoTicket">缺货登记</span>
-        <div class="price">{{ item.price }}</div>
+        <span class="notticket" :class="{active:item.count==0}" v-if="item.count==0">缺货登记</span>
+        <div class="price">￥{{ item.price }}</div>
       </div>
     </div>
 
@@ -21,7 +28,7 @@
         <img src="//img.alicdn.com/tfs/TB1mX78MCzqK1RjSZFpXXakSXXa-24-24.png" class="tips-icon">
         <span
           class="tips-content"
-        >请下载大麦APP，为了方便有票时能按照登记顺序通知您，请您提交申请后，确认已允许大麦APP发送通知；若补票，客户端将发送通知消息给您；若始终缺货，将不做另行通知</span>
+        >请登陆票务系统，为了方便有票时能按照登记顺序通知您，请您提交申请后，确认已允许票务系统发送通知；若补票，客户端将发送通知消息给您；若始终缺货，将不做另行通知</span>
       </div>
     </div>
     <a href="#" v-show="showInfomation">
@@ -33,14 +40,15 @@
         <div class="number-left">数量</div>
         <div class="number-right">
           <div class="right-info">
-            <!-- <el-input-number v-model="num" @change="handleChange" :min="1" :max="6" label="描述文字"></el-input-number> -->
-            <button @click="btnClick" class="reduce" :disabled="reduceDisable">-</button>
-            <div class="input-wrapper">
-              <input type="text" v-model="ticketNum">
-            </div>
-            <button class="add" @click="btnClick" :disabled="addDisable">+</button>
+            <el-input-number v-model="ticketNum" @change="numChange" :min="0" :max="info.orderLimit" label="描述文字"
+                             style="width: 100%"></el-input-number>
+            <!--            <button @click="btnClick" class="reduce" :disabled="reduceDisable">-</button>-->
+            <!--            <div class="input-wrapper">-->
+            <!--              <input type="text" v-model="ticketNum">-->
+            <!--            </div>-->
+            <!--            <button class="add" @click="btnClick" :disabled="addDisable">+</button>-->
           </div>
-          <div class="right-limit">每笔订单限购6张</div>
+          <div class="right-limit">每笔订单限购{{ info.orderLimit }}张</div>
         </div>
       </div>
       <div class="order-info">按付款顺序配票，优先连座配票</div>
@@ -53,32 +61,38 @@
           <i>￥</i>
           {{ totalPrice }}
         </span>
-        <span class="total-offer">登录后查看是否享受优惠</span>
+        <!--        <span class="total-offer">登录后查看是否享受优惠</span>-->
       </div>
     </div>
-    <a href="#" v-show="showOrder">
-      <div class="buybtn">立即预订</div>
-    </a>
+    <div class="buybtn" v-show="showOrder" @click="yuding" style="    cursor: pointer;">立即预订</div>
   </div>
 </template>
 <script>
+/* eslint-disable */
+import request from "../../util/axios";
+
 export default {
-  props: ['ticket'],
-  data () {
+  props: ['ticket', 'info'],
+  data() {
     return {
-      ticketNum: 1,
+      ticketNum: 0,
       showOrder: true,
       showInfomation: false,
       totalPrice: '00.00',
       targetDataset: '',
       targetText: '',
       reduceDisable: false,
-      addDisable: false
+      addDisable: false,
+      activeIndex: null,
+      price: null,
     }
   },
   methods: {
-    handleClick (e) {
-      this.ticketNum = 1
+    handleClick(index, e) {
+      this.activeIndex = index;
+      this.price = this.ticket[index].price
+      this.ticketNum = 0
+      this.totalPrice = 0
       this.addDisable = false
       this.reduceDisable = false
       if (e.target.children.length >= 2) {
@@ -88,6 +102,7 @@ export default {
         this.showOrder = true
         this.showInfomation = false
         if (e.target.className === 'list-item') {
+          console.log(e.target.dataset)
           this.targetDataset = e.target.dataset.price
           // console.log(e)
           if (this.targetDataset) {
@@ -98,7 +113,7 @@ export default {
         }
       }
     },
-    btnClick (e) {
+    btnClick(e) {
       if (e.target.className === 'add') {
         this.ticketNum++
         if (this.ticketNum === 6) {
@@ -113,7 +128,35 @@ export default {
         }
         this.totalPrice = this.ticketNum * this.targetDataset
       }
+    },
+    numChange() {
+      this.totalPrice = this.ticketNum * this.price
+    },
+    yuding() {
+      if (this.ticketNum == 0) {
+        alert("数量不能为0!")
+      } else if (this.$store.getters.getUserInfo.username == '') {
+        alert("请先登录!")
+      } else {
+        let orderDTO = {
+          price: this.price,
+          amount: this.ticketNum,
+          total: this.totalPrice,
+          ticketId: this.info.id,
+          userId: this.$store.getters.getUserInfo.id
+        }
+        request.post("/orderInfo/saveOrder", orderDTO).then(res => {
+          if (res.code == 500) {
+            alert(res.msg)
+          } else if (res.code == 0) {
+            alert("预定成功!")
+            this.$router.push({name: '/order'})
+          }
+        })
+      }
     }
+  },
+  created() {
   }
 }
 </script>
@@ -121,17 +164,20 @@ export default {
 <style lang="scss" scoped>
 .ticket {
   display: inline-block;
+
   .select-left {
     display: inline-block;
     font-size: 16px;
     color: #4a4a4a;
     height: 48px;
   }
+
   .select-right {
     display: inline-block;
     vertical-align: top;
     margin-left: 15px;
     flex: 1;
+
     .list-item {
       box-sizing: border-box;
       height: 75px;
@@ -145,12 +191,21 @@ export default {
       position: relative;
       cursor: pointer;
       text-align: center;
+
       &.active {
         border-color: #ffeaf1;
         color: #ff1268;
         background: #ffeaf1;
         outline-color: #ffeaf1;
       }
+
+      &.activeIndex {
+        border-color: #ffeaf1;
+        color: #ff1268;
+        background: #ffeaf1;
+        outline-color: #ffeaf1;
+      }
+
       .notticket {
         display: block;
         position: absolute;
@@ -161,21 +216,25 @@ export default {
         text-align: center;
         padding: 0 4px;
         border-bottom-right-radius: 5px;
+
         &.active {
           background-color: #ff1268;
         }
       }
+
       .price {
         margin: 15px 0;
       }
     }
   }
+
   .infomation {
     .ticket-info {
       margin-left: 46px;
       font-size: 12px;
       color: #999;
     }
+
     .tips {
       margin-left: 45px;
       margin-top: 28px;
@@ -183,20 +242,24 @@ export default {
       color: #666;
       letter-spacing: 0.18px;
       line-height: 21px;
+
       .tips-icon {
         width: 12px;
         height: 12px;
         position: relative;
         top: 1px;
       }
+
       .tips-content {
         font-size: 12px;
       }
     }
   }
+
   .order {
     .order-number {
       margin-top: 33px;
+
       .number-left {
         display: inline-block;
         font-size: 16px;
@@ -204,12 +267,14 @@ export default {
         vertical-align: top;
         line-height: 40px;
       }
+
       .number-right {
         display: inline-block;
         height: 40px;
         vertical-align: top;
         margin-left: 9px;
         line-height: 40px;
+
         .right-info {
           position: relative;
           width: 120px;
@@ -227,20 +292,23 @@ export default {
             vertical-align: 20px;
             margin-left: 5px;
           }
+
           .input-wrapper {
             position: relative;
-            margin:0;
+            margin: 0;
             padding: 0;
             display: inline-block;
             width: 38px;
             height: 38px;
             top: -19px;
-            input{
+
+            input {
               height: 24px;
               width: 100%;
             }
           }
         }
+
         .right-limit {
           display: inline-block;
           font-size: 12px;
@@ -250,6 +318,7 @@ export default {
         }
       }
     }
+
     .order-info {
       margin-top: 9px;
       margin-left: 46px;
@@ -257,8 +326,10 @@ export default {
       color: #999;
     }
   }
+
   .order-total {
     margin-top: 33px;
+
     .total-left {
       display: inline-block;
       font-size: 16px;
@@ -266,16 +337,19 @@ export default {
       vertical-align: top;
       line-height: 40px;
     }
+
     .total-right {
       display: inline-block;
       height: 40px;
       vertical-align: top;
       margin-left: 9px;
       line-height: 40px;
+
       .totol-price {
         font-size: 21px;
         color: #ff1268;
         margin-left: -9px;
+
         i {
           position: relative;
           left: 3px;
@@ -283,28 +357,26 @@ export default {
           font-style: normal;
         }
       }
+
       .total-offer {
         font-size: 12px;
         color: #999;
       }
     }
   }
-  a {
-    text-decoration: none;
+
+  .buybtn {
+    margin-top: 30px;
+    margin-left: 85px;
+    width: 210px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #ff2d79;
     color: #fff;
-    .buybtn {
-      margin-top: 30px;
-      margin-left: 85px;
-      width: 210px;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-      background-color: #ff2d79;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 400;
-      border-radius: 3px;
-    }
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 3px;
   }
 }
 </style>

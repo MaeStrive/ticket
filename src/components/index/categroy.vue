@@ -1,6 +1,6 @@
 <template>
   <div class="categroy">
-    <a href="#" class="category-list" v-for="(item,index) in category" :key="index">
+    <a class="category-list" v-for="(item,index) in category" :key="index" @click="toSort(item.id)" style="cursor: pointer">
       <span class="category-icon" :class="item.iconPath"></span>
       <p>{{ item.name }}</p>
     </a>
@@ -16,9 +16,14 @@ export default {
       category: []
     }
   },
+  methods: {
+    toSort(id) {
+      this.$router.push({name: 'sort', params: {categoryId: id}})
+    }
+  },
   created() {
     request.get('/category/listAllCategory').then(res => {
-      this.category=res.data
+      this.category = res.data
     })
 
   }

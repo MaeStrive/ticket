@@ -6,7 +6,8 @@ import detailsPage from '@/page/details'
 import sortPage from '@/page/sort'
 import loginPage from '@/page/login'
 import registerPage from '@/page/register'
-
+import orderPage from '@/page/order'
+/* eslint-disable */
 Vue.use(Router)
 
 export default new Router({
@@ -29,7 +30,13 @@ export default new Router({
         path: 's/:name',
         name: 'details',
         component: detailsPage
-      }]
+      },
+        {
+          path: '/order',
+          name: 'order',
+          component: orderPage
+        }
+      ]
     }, {
       path: '/login',
       name: 'login',
@@ -38,5 +45,7 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: registerPage
-    }]
+    },
+
+  ]
 })

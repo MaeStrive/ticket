@@ -20,34 +20,23 @@
           </div>
         </div>
         <div class="box-right">
-          <div class="box-right-item" v-for="(v,i) in item.rightList" :key="i">
+          <div class="box-right-item" v-for="(v,i) in item.rightList" :key="i" style="cursor: pointer"  @click="toDetails(v.id)">
             <div class="item-img">
-              <router-link :to="{name: 'details', params: {id: v.id}}">
                 <img :src="v.imgPath">
-              </router-link>
             </div>
             <div class="item-info">
               <div class="title">
-                <router-link
-                  :to="{name: 'details', params: {id: v.id}}"
-                >{{ v.name }}
-                </router-link>
+             {{ v.name }}
               </div>
               <div class="venue">
-                <router-link :to="{name: 'details', params: {id: v.id}}">{{ v.address }}</router-link>
+                {{ v.address }}
               </div>
-              <div class="showtime">
-                <router-link
-                  :to="{name: 'details', params: {id: v.id}}"
-                >{{ v.showTime }}
-                </router-link>
+              <div class="showtime">{{ formatDate(v.showtime) }}
               </div>
 
               <div class="price">
-                <router-link :to="{name: 'details', params: {id: v.id}}">
                   ¥{{ v.price.split(",")[0] }}
                   <span>起</span>
-                </router-link>
               </div>
             </div>
           </div>
@@ -67,10 +56,20 @@ export default {
   },
   methods: {
     toDetails(id) {
-      request.get('/ticket/getTicketById',{params:{id:id}}).then(res => {
+      request.get('/ticket/getTicketById', {params: {id: id}}).then(res => {
         console.log(res.data)
-        this.$router.push({name: 'details',params: {detailsInfo: res.data}})
+        this.$router.push({name: 'details', params: {ticketDetailVO: res.data}})
       })
+    },
+    formatDate(str) {
+      const date = new Date(str);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
 
   }

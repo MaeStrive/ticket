@@ -16,7 +16,7 @@
               <span>{{ item.name }}</span>
             </div>
             <div class="address">
-              <div class="time">{{ item.showtime }}</div>
+              <div class="time">{{ formatDate(item.showtime)}}</div>
               <div class="place">
                 <div class="addr">{{ item.address }}</div>
                 <a class="mapicon">
@@ -24,16 +24,16 @@
                 </a>
               </div>
             </div>
-            <div class="notice">
-              <div class="notice-prefix">预售</div>
-              <div>
-                <div>本商品为预售商品，正式开票后将第一时间为您配票</div>
-                <div
-                  class="notice-detail"
-                >预售期间，由于主办未正式开票，下单后无法立即为您配票。一般于演出前2-6周开票，待正式开票后，请您通过订单详情页或者票夹详情，查看票品信息、取票方式等演出相关信息
-                </div>
-              </div>
-            </div>
+<!--            <div class="notice">-->
+<!--              <div class="notice-prefix">预售</div>-->
+<!--              <div>-->
+<!--                <div>本商品为预售商品，正式开票后将第一时间为您配票</div>-->
+<!--                <div-->
+<!--                  class="notice-detail"-->
+<!--                >预售期间，由于主办未正式开票，下单后无法立即为您配票。一般于演出前2-6周开票，待正式开票后，请您通过订单详情页或者票夹详情，查看票品信息、取票方式等演出相关信息-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
             <div class="buy-ticket">
               <div class="perform-time">
                 <img
@@ -47,22 +47,22 @@
                 <div class="select-right">
                   <div class="list-item">
                     <span class="presell">直售</span>
-                    <span>{{ item.showtime }}</span>
+                    <span>{{ formatDate(item.showtime)}}</span>
                   </div>
                 </div>
               </div>
               <div class="ticket-select">
-                <select-right :ticket="item.price"/>
+                <select-right :ticket="priceVOList" :info="ticketDetailVO.ticket"/>
               </div>
             </div>
           </div>
         </div>
         <div class="content-notice">
-          <notice-nav></notice-nav>
+          <notice-nav :detail="ticketDetailVO.ticket.detail"></notice-nav>
         </div>
       </div>
       <div class="content-right">
-        <service/>
+        <service :ticketId="this.ticketDetailVO.ticket.id"/>
       </div>
     </div>
   </div>
@@ -83,13 +83,17 @@ export default {
   data() {
     return {
       performInfo: [],
-      detailsInfo: ''
+      detailsInfo: '',
+      ticketDetailVO: '',
+      priceVOList:[]
     }
   },
   created() {
-    this.detailsInfo = this.$route.params.detailsInfo;
-    console.log(this.detailsInfo)
-    this.performInfo.push(this.detailsInfo)
+    this.ticketDetailVO = this.$route.params.ticketDetailVO;
+    // console.log(this.detailsInfo)
+    this.performInfo.push(this.ticketDetailVO.ticket)
+    this.priceVOList=this.ticketDetailVO.priceVOList
+    console.log(this.priceVOList)
     // api.getSort().then(res => {
     //   // console.log(res.data.performInfo)
     //   this.performInfo = res.data.performInfo
@@ -101,6 +105,16 @@ export default {
   methods: {
     handleClick(e) {
       // console.log(e)
+    },
+    formatDate(str) {
+      const date = new Date(str);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
   }
 }

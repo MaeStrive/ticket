@@ -17,9 +17,9 @@
       </dd>
       <dd>
         <i class="el-icon-download"></i>
-        <el-popover placement="top-start" title width="200" trigger="hover" content="抱歉，暂不支持此功能">
-          <el-button slot="reference">下载</el-button>
-        </el-popover>
+        <!--        <el-popover placement="top-start" title width="200" trigger="hover" content="抱歉，暂不支持此功能">-->
+        <span @click="toOrder" style="cursor: pointer">订单</span>
+        <!--        </el-popover>-->
       </dd>
     </dl>
 
@@ -28,6 +28,7 @@
 
 <script>
 /* eslint-disable */
+import request from "../../util/axios";
 
 export default {
   data() {
@@ -37,7 +38,7 @@ export default {
   },
   methods: {
     logout() {
-      let userInfo={
+      let userInfo = {
         username: '',
         id: '',
         age: '',
@@ -45,9 +46,18 @@ export default {
         createTime: '',
         email: '',
       }
+      request.get("/commonUser/logout")
       this.$store.commit("setUserInfo", userInfo)
       alert("注销成功")
       this.$router.push({name: 'login'})
+    },
+    toOrder() {
+      if (this.$store.getters.getUserInfo.username == '') {
+        alert("请先登录!")
+        this.$router.push({name: 'login'})
+      } else {
+        this.$router.push({name: 'order'})
+      }
     }
   },
   created() {

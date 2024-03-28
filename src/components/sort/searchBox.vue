@@ -5,19 +5,19 @@
       <div class="factor-content">
         <div class="factor-selected">
           当前选中城市
-          <span class="factor-selected-city">全国</span>
+          <!--          <span class="factor-selected-city">全国</span>-->
         </div>
         <div class="factor-content-main">
-          <span class="factor-content-item default">全部</span>
+          <!--          <span class="factor-content-item default">全部</span>-->
           <div class="factor-content">
             <span
               class="factor-content-item"
               v-for="(item,index) in cityList"
               :key="index"
-              :data-type="item.type"
-              :class="{'active':type===item.type}"
+              :data-type="item.district"
+              :class="{'active':type===item.district}"
               @click="handle"
-            >{{ item.city }}</span>
+            >{{ item.district }}</span>
           </div>
           <!---->
         </div>
@@ -28,16 +28,16 @@
       <span class="factor-title">分 类：</span>
       <div class="factor-content">
         <div class="factor-content-main">
-          <span class="factor-content-item default">全部</span>
+          <!--          <span class="factor-content-item default">全部</span>-->
           <div class="factor-content">
             <span
               class="factor-content-item"
               v-for="(item,index) in typeList"
               :key="index"
-              :class="{'active':tab===item.tab}"
-              :data-tab="item.tab"
+              :class="{'active':tab==item.id}"
+              :data-tab="item.id"
               @click="handleClick"
-            >{{ item.type }}</span>
+            >{{ item.name }}</span>
           </div>
         </div>
       </div>
@@ -45,87 +45,57 @@
   </div>
 </template>
 <script>
+/* eslint-disable */
+import request from "../../util/axios";
+
 export default {
-  data () {
+  props: ['categoryId'],
+  data() {
     return {
-      cityList: [
-        {
-          city: '北京',
-          type: 'beijing'
-        },
-        {
-          city: '上海',
-          type: 'shanghai'
-        },
-        {
-          city: '天津',
-          type: 'tianjin'
-        },
-        {
-          city: '深圳',
-          type: 'shenzhen'
-        }
-      ],
-      typeList: [
-        {
-          type: '音乐会',
-          id: '01',
-          tab: 'yyh'
-        },
-        {
-          type: '歌剧话剧',
-          id: '02',
-          tab: 'gjhj'
-        },
-        {
-          type: '演唱会',
-          id: '03',
-          tab: 'ych'
-        },
-        {
-          type: '曲苑杂坛',
-          id: '04',
-          tab: 'qyzt'
-        },
-        {
-          type: '展览休闲',
-          id: '05',
-          tab: 'zlxx'
-        },
-        {
-          type: '舞蹈芭蕾',
-          id: '06',
-          tab: 'wdbl'
-        },
-        {
-          type: '体育',
-          id: '07',
-          tab: 'ty'
-        },
-        {
-          type: '儿童亲子',
-          id: '08',
-          tab: 'etqz'
-        },
-        {
-          type: '旅游演艺',
-          id: '09',
-          tab: 'lyyy'
-        }
-      ],
-      tab: '',
-      type: ''
+      cityList: [],
+      typeList: [],
+      tab: 0,
+      type: '全部',
+      seleteddata: '',
     }
   },
   methods: {
-    handleClick (e) {
+    handleClick(e) {
       this.tab = e.target.getAttribute('data-tab')
-      alert('暂不支持此功能！')
+      console.log(this.tab)
+      this.selectData()
+      // alert('暂不支持此功能！')
     },
-    handle (e) {
+    handle(e) {
       this.type = e.target.getAttribute('data-type')
-      alert('暂不支持此功能！')
-    }
+      // alert('暂不支持此功能！')
+      this.selectData()
+    },
+    selectData() {
+      request.get('/ticket/listTicketByCondition', {
+        params: {
+          district: this.type,
+          categoryId: this.tab,
+        }
+      }).then(res => {
+        console.log(res.data)
+        this.seleteddata = res.data
+        this.$emit('data-selected', this.seleteddata);
+      })
+    },
+  },
+  created() {
+    if (this.categoryId != null && this.categoryId != undefined) this.tab = this.categoryId
+    request.get('/ticket/listAllDisctinct').then(res => {
+      this.cityList = res.data
+      this.cityList.unshift({district: '全部'})
+    })
+    request.get('/category/listAllCategory').then(res => {
+      console.log(this.typeList)
+      this.typeList = res.data
+      this.typeList.unshift({id: 0, name: '全部'})
+    })
+    this.selectData()
   }
 }
 </script>
@@ -135,6 +105,7 @@ export default {
   padding: 10px 0;
   font-size: 14px;
   border-bottom: 1px dotted #dfdfdf;
+
   .factor-title {
     width: 80px;
     color: #968788;
@@ -142,11 +113,14 @@ export default {
     margin-right: 18px;
     line-height: 26px;
   }
+
   .factor-content {
     flex: 1;
+
     .factor-selected {
       color: #9b9b9b;
       margin-bottom: 6px;
+
       .factor-selected-city {
         display: inline-block;
         height: 26px;
@@ -158,8 +132,10 @@ export default {
         background-color: #ed0b75;
       }
     }
+
     .factor-content-main {
       display: flex;
+
       .factor-content-item {
         &.default {
           background-color: #ed0b75;
@@ -169,11 +145,13 @@ export default {
           line-height: 26px;
           padding: 0 6px;
         }
-        &.active{
+
+        &.active {
           background-color: #ed0b75;
           color: #fff;
         }
       }
+
       .factor-content {
         span {
           display: inline-block;

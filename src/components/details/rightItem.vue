@@ -2,7 +2,7 @@
   <div class="right-item">
     <div class="item" v-for="(item,index) in info" :key="index">
       <img
-        :src="item.img"
+        :src="item.imgPath"
         alt
         class="item-img"
       >
@@ -10,11 +10,11 @@
         <div class="item-info-main">
           <div class="item-info-name">{{ item.name }}</div>
           <div class="item-info-address">{{ item.address }}</div>
-          <div class="item-info-date">{{ item.date }}</div>
+          <div class="item-info-date">{{ formatDate(item.showtime) }}</div>
         </div>
         <div class="item-info-price">
             <span class="price-number">
-                ￥{{ item.price }}
+                ￥{{ item.price.split(",")[0] }}
             </span>
             起
         </div>
@@ -24,11 +24,23 @@
 </template>
 
 <script>
-
+/* eslint-disable */
 export default {
   props: [
     'info'
-  ]
+  ],
+  methods:{
+    formatDate(str) {
+      const date = new Date(str);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
