@@ -14,7 +14,7 @@
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
   </span>
     </el-dialog>
-    <el-col :span="20">
+    <el-col :span="22">
       <el-row class="m-crumbs">
         <crumbs/>
       </el-row>
@@ -29,8 +29,10 @@
               &emsp;<span
               style="font-size: 14px;color: rgba(255,0,0,0.62)">时间:{{ formatDate(order.createTime) }}</span>
               &emsp;<el-tag v-if="order.status=='待支付'" type="danger">{{ order.status }}</el-tag>
-              <el-tag v-else-if="order.status=='已支付'">{{ order.status }}</el-tag>
+              <el-tag v-else-if="order.status=='已支付'" type="success">{{ order.status }}</el-tag>
+              <el-tag v-else-if="order.status=='取消支付'" type="info">{{ order.status }}</el-tag>
               &emsp;<el-button size="small" @click="showInfo(order.id)">查看详情</el-button>
+              &emsp;<el-button size="small" type="info" v-if="order.status=='待支付'" @click="ljzf(order.id,'取消支付')">取消支付</el-button>
               &emsp;<el-button size="small" type="warning" v-if="order.status=='待支付'"
                                @click="ljzf(order.id,'已支付')">
               立即支付
@@ -78,13 +80,13 @@ export default {
       this.dialogVisible = true
     },
     ljzf(id, str) {
-      if (confirm("您确定要支付吗?")) {
+      if (confirm("您确定进行"+(str=='已支付'?'支付':str)+"吗?")) {
         let orderInfo = {
           id: id,
           status: str,
         }
         request.post("/orderInfo/updateOrderStatus", orderInfo).then(res => {
-          alert("支付成功!")
+          alert("操作成功!")
           this.fetchData()
         })
       }

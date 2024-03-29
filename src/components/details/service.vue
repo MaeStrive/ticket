@@ -53,124 +53,130 @@
 
     <div class="suggest">
       <div class="title">为你推荐</div>
-      <right-item :info="recommendList"/>
+      <right-item :info="recommendList" @recom="recom"/>
     </div>
   </div>
 </template>
 <script>
-/* eslint-disable */
-import rightItem from './rightItem'
-import api from '@/api/getData'
-import request from "../../util/axios";
 
-export default {
-  props: ['ticketId'],
-  components: {
-    rightItem
-  },
-  data() {
-    return {
-      recommendList: []
-    }
-  },
-  created() {
-    // api.getRightItem().then(res => {
-    //   // console.log(res.data.info)
-    //   this.recommendList = res.data.info
-    // })
-    request.get('/ticket/listRecommend', {
-      params: {
-        ticketId: this.ticketId,
+  import rightItem from './rightItem'
+  import api from '@/api/getData'
+  import request from "../../util/axios";
+
+  export default {
+    props: ['ticketId'],
+    components: {
+      rightItem
+    },
+    data() {
+      return {
+        recommendList: []
       }
-    }).then(res => {
-      this.recommendList = res.data
-    })
+    },
+    created() {
+      // api.getRightItem().then(res => {
+      //   // console.log(res.data.info)
+      //   this.recommendList = res.data.info
+      // })
+      request.get('/ticket/listRecommend', {
+        params: {
+          ticketId: this.ticketId,
+        }
+      }).then(res => {
+        this.recommendList = res.data
+      })
+    },
+    methods: {
+      recom(data) {
+        console.log("service==>", data)
+        this.$emit('recom', data);
+      }
+    }
   }
-}
 </script>
 <style lang="scss" scoped>
-.service {
-  padding: 24px 15px;
-  background: #fafafa;
-  border: 1px solid #ebebeb;
+  .service {
+    padding: 24px 15px;
+    background: #fafafa;
+    border: 1px solid #ebebeb;
 
-  .seat-map {
-    display: block;
+    .seat-map {
+      display: block;
 
-    .el-button {
-      width: 251px;
-      background-color: #ff2d79;
-      margin-bottom: 24px;
-      height: 35px;
-      font-size: 12px;
-      text-align: center;
-      border-radius: 3px;
-      color: #fff;
-      cursor: pointer;
+      .el-button {
+        width: 251px;
+        background-color: #ff2d79;
+        margin-bottom: 24px;
+        height: 35px;
+        font-size: 12px;
+        text-align: center;
+        border-radius: 3px;
+        color: #fff;
+        cursor: pointer;
 
-      border-radius: 36px;
-    }
-  }
-
-  .service-note {
-    margin-bottom: 18px;
-
-    .note-name {
-      font-size: 14px;
-
-      i {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        background-repeat: no-repeat;
-        background-image: url(https://img.alicdn.com/tfs/TB1d7mWRMHqK1RjSZFEXXcGMXXa-24-26.png);
-        background-size: 12px 12px;
-        margin-right: 5px;
-
-        &.support-yes {
-          background-image: url(https://img.alicdn.com/tfs/TB1b7uJRSrqK1RjSZK9XXXyypXa-24-24.png);
-        }
+        border-radius: 36px;
       }
     }
 
-    .note-desc {
-      margin-top: 6px;
-      font-size: 12px;
-      color: #999;
+    .service-note {
+      margin-bottom: 18px;
+
+      .note-name {
+        font-size: 14px;
+
+        i {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          background-repeat: no-repeat;
+          background-image: url(https://img.alicdn.com/tfs/TB1d7mWRMHqK1RjSZFEXXcGMXXa-24-26.png);
+          background-size: 12px 12px;
+          margin-right: 5px;
+
+          &.support-yes {
+            background-image: url(https://img.alicdn.com/tfs/TB1b7uJRSrqK1RjSZK9XXXyypXa-24-24.png);
+          }
+        }
+      }
+
+      .note-desc {
+        margin-top: 6px;
+        font-size: 12px;
+        color: #999;
+      }
     }
-  }
 
-  .service-code {
-    display: flex;
-    margin-top: 30px;
-    border: 0.5px solid #e2e2e2;
-    background: #fff;
-
-    .code-text {
+    .service-code {
       display: flex;
-      flex: 1;
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-      font-size: 12px;
-      color: #999;
+      margin-top: 30px;
+      border: 0.5px solid #e2e2e2;
+      background: #fff;
+
+      .code-text {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        font-size: 12px;
+        color: #999;
+      }
+
+      img {
+        height: 90px;
+      }
     }
 
-    img {
-      height: 90px;
+    .suggest {
+      width: 283px;
+      margin-top: 60px;
+
+      .title {
+        margin-bottom: 24px;
+        font-size: 20px;
+        color: #000;
+        line-height: 28px;
+      }
     }
   }
-
-  .suggest {
-    width: 283px;
-    margin-top: 60px;
-
-    .title {
-      margin-bottom: 24px;
-      font-size: 20px;
-      color: #000;
-      line-height: 28px;
-    }
-  }
-}
 </style>

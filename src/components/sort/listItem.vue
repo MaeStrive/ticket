@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="item" v-for="(item,index) in list" :key="index">
+    <div class="item" v-for="(item,index) in list" :key="index" style="cursor: pointer" @click="toDetails(item.id)">
       <div class="item-img">
         <span class="tag">{{ item.tag }}</span>
         <img
@@ -32,6 +32,7 @@
 </template>
 <script>
 /* eslint-disable */
+import request from '../../util/axios'
 export default {
   props: [
     'list'
@@ -49,6 +50,12 @@ export default {
       const minutes = String(date.getMinutes()).padStart(2, '0');
 
       return `${year}-${month}-${day} ${hours}:${minutes}`;
+    },
+    toDetails(id){
+      request.get('/ticket/getTicketById', {params: {id: id}}).then(res => {
+        console.log(res.data)
+        this.$router.push({name: 'details', params: {ticketDetailVO: res.data}})
+      })
     }
   }
 }

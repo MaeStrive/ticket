@@ -77,11 +77,13 @@ export default {
         this.$alert('请输入用户名', '用户名不能为空', {
           confirmButtonText: '确定'
         })
+        return
       }
       if (!this.pasd) {
         this.$alert('请输入密码', '密码不能为空', {
           confirmButtonText: '确定'
         })
+        return
       }
       let commonUser = {
         username: this.name,

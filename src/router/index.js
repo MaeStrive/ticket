@@ -7,6 +7,7 @@ import sortPage from '@/page/sort'
 import loginPage from '@/page/login'
 import registerPage from '@/page/register'
 import orderPage from '@/page/order'
+import infoPage from '@/page/info'
 /* eslint-disable */
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
           path: '/order',
           name: 'order',
           component: orderPage
+        },
+        {
+          path: '/info',
+          name: 'info',
+          component: infoPage
         }
       ]
     }, {

@@ -150,7 +150,7 @@ export default {
             alert(res.msg)
           } else if (res.code == 0) {
             alert("预定成功!")
-            this.$router.push({name: '/order'})
+            this.$router.push({name: 'order'})
           }
         })
       }
