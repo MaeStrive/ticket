@@ -1,29 +1,29 @@
 <template>
   <div class="search-bar">
-    <div class="wrapper">
-      <i class="el-icon-search"></i>
-      <el-input
-        v-model="searchword"
-        placeholder="搜索明星、演出、体育赛事"
-        @focus="focus"
-        @blur="blur"
-        @input="input"
-        style="width: 300px"
-      ></el-input>
-      <el-button type="primary">搜索</el-button>
-      <dl class="hotSinger" v-if="isHotSinger">
-        <dt>热门搜索</dt>
-        <dd v-for="(item,index) in hotSinger" :key="index">
-          <router-link :to="{name:'sort', params: {name: item}}">{{ item }}</router-link>
-        </dd>
-      </dl>
+<!--    <div class="wrapper">-->
+<!--      <i class="el-icon-search"></i>-->
+<!--      <el-input-->
+<!--        v-model="searchword"-->
+<!--        placeholder="搜索明星、演出、体育赛事"-->
+<!--        @focus="focus"-->
+<!--        @blur="blur"-->
+<!--        @input="input"-->
+<!--        style="width: 300px"-->
+<!--      ></el-input>-->
+<!--      <el-button type="primary">搜索</el-button>-->
+<!--&lt;!&ndash;      <dl class="hotSinger" v-if="isHotSinger">&ndash;&gt;-->
+<!--&lt;!&ndash;        <dt>热门搜索</dt>&ndash;&gt;-->
+<!--&lt;!&ndash;        <dd v-for="(item,index) in hotSinger" :key="index">&ndash;&gt;-->
+<!--&lt;!&ndash;          <router-link :to="{name:'sort', params: {name: item}}">{{ item }}</router-link>&ndash;&gt;-->
+<!--&lt;!&ndash;        </dd>&ndash;&gt;-->
+<!--&lt;!&ndash;      </dl>&ndash;&gt;-->
 
-      <dl class="singerList" v-if="isSingerList">
-        <dd v-for="(item,index) in singerList" :key="index">
-          <router-link :to="{name:'sort', params: {name: item}}">{{ item }}</router-link>
-        </dd>
-      </dl>
-    </div>
+<!--      <dl class="singerList" v-if="isSingerList">-->
+<!--        <dd v-for="(item,index) in singerList" :key="index">-->
+<!--          <router-link :to="{name:'sort', params: {name: item}}">{{ item }}</router-link>-->
+<!--        </dd>-->
+<!--      </dl>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -76,8 +76,8 @@ export default {
 .search-bar {
   width: 60%;
   height: 44px;
-  margin-top: 26px;
-  margin-left: 42px;
+  //margin-top: 26px;
+  //margin-left: 20px;
   .wrapper {
     width: 401px;
     height: 44px;

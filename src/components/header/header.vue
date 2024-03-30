@@ -1,6 +1,6 @@
   <template>
     <div class="m-header">
-        <img src="https://img.alicdn.com/tps/i4/TB1r2Qsp7P2gK0jSZPxSuucQpXa.jpg" alt="">
+<!--        <img src="https://img.alicdn.com/tps/i4/TB1r2Qsp7P2gK0jSZPxSuucQpXa.jpg" alt="">-->
         <top-bar />
     </div>
 </template>
