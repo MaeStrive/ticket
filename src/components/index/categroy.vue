@@ -1,9 +1,9 @@
 <template>
   <div class="categroy">
-    <a class="category-list" v-for="(item,index) in category" :key="index" @click="toSort(item.id)" style="cursor: pointer">
+    <router-link class="category-list" v-for="(item,index) in category" :key="index" :to="{name:'sort', params:{name:'sort',categoryId:item.id}}" style="cursor: pointer">
       <span class="category-icon" :class="item.iconPath"></span>
       <p>{{ item.name }}</p>
-    </a>
+    </router-link>
   </div>
 </template>
 <script>

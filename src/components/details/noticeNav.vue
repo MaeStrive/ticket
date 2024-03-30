@@ -5,8 +5,7 @@
         <span slot="label" class="nav-item active">项目详情</span>
         <div class="list">
           <div class="title">演出介绍</div>
-          <div class="words">
-            {{this.detail}}
+          <div class="words" v-html="this.detail">
           </div>
         </div>
       </el-tab-pane>

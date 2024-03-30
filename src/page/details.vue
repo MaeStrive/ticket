@@ -122,6 +122,7 @@
         this.performInfo.pop()
         this.performInfo.push(data.ticket)
         this.priceVOList=data.priceVOList
+        this.ticketDetailVO.ticket.detail=data.ticket.detail
       }
     }
   }
