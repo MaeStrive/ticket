@@ -1,17 +1,18 @@
 <template>
   <div class="sidebar">
     <el-dialog
+      style="overflow: auto"
       title="公告"
       :visible.sync="dialogVisible"
       width="30%"
     >
-      <el-card class="box-card" style="margin-top: 10px" v-for="notice in noticeList" :key="notice.id">
+      <el-card class="box-card" style="margin-top: 10px;overflow: auto" v-for="notice in noticeList" :key="notice.id">
         <div class="text item">
-          <div style="margin: 10px">
+          <div style="">
            <span
             style="font-size: 14px;color: rgba(255,0,0,0.62)">发布时间:{{ formatDate(notice.createTime) }}</span>
             &emsp;
-          <div>{{notice.content}}</div>
+          <div v-html="notice.content" style="height: 50%" ></div>
             <span>发布人:{{notice.managerId}}</span>
           </div>
         </div>

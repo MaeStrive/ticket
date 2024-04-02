@@ -16,7 +16,7 @@ Vue.use(VueX)
 export default new VueX.Store({
   plugins: [createPersistedState()],
   state: {
-    city: '山东',
+    city: '洛阳',
     userName: '',
     userInfo: {
       username: '',

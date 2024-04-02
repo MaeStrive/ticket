@@ -1,5 +1,5 @@
 <template>
-    <div class="top-bar">
+    <div class="top-bar" style="    box-shadow: 0 2px 16px 0 rgba(220,220,220,.5);">
         <el-row>
             <el-col :span="9">
                 <left-bar />

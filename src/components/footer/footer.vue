@@ -1,53 +1,53 @@
 <template>
   <div class="m-footer">
     <div class="footer_nav">
-      <el-row>
-        <ul class="footer__links">
-          <li class="footer__links__list">
-            <a href="#">帮助中心</a>
-          </li>
-          <li class="footer__links__grep">|</li>
+<!--      <el-row>-->
+<!--        <ul class="footer__links">-->
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">帮助中心</a>-->
+<!--          </li>-->
+<!--          <li class="footer__links__grep">|</li>-->
 
-          <li class="footer__links__list">
-            <a href="#">公司介绍</a>
-          </li>
-          <li class="footer__links__grep">|</li>
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">公司介绍</a>-->
+<!--          </li>-->
+<!--          <li class="footer__links__grep">|</li>-->
 
-          <li class="footer__links__list">
-            <a href="#">品牌识别</a>
-          </li>
-          <li class="footer__links__grep">|</li>
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">品牌识别</a>-->
+<!--          </li>-->
+<!--          <li class="footer__links__grep">|</li>-->
 
-          <li class="footer__links__list">
-            <a href="#">公司大事记</a>
-          </li>
-          <li class="footer__links__grep">|</li>
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">公司大事记</a>-->
+<!--          </li>-->
+<!--          <li class="footer__links__grep">|</li>-->
 
-          <li class="footer__links__list">
-            <a href="#">协议及隐私权政策</a>
-          </li>
-          <li class="footer__links__grep">|</li>
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">协议及隐私权政策</a>-->
+<!--          </li>-->
+<!--          <li class="footer__links__grep">|</li>-->
 
-          <li class="footer__links__list">
-            <a href="#">廉正举报</a>
-          </li>
-          <li class="footer__links__grep">|</li>
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">廉正举报</a>-->
+<!--          </li>-->
+<!--          <li class="footer__links__grep">|</li>-->
 
-          <li class="footer__links__list">
-            <a href="#">联系合作</a>
-          </li>
-          <li class="footer__links__grep">|</li>
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">联系合作</a>-->
+<!--          </li>-->
+<!--          <li class="footer__links__grep">|</li>-->
 
-          <li class="footer__links__list">
-            <a href="#">招聘信息</a>
-          </li>
-          <li class="footer__links__grep">|</li>
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">招聘信息</a>-->
+<!--          </li>-->
+<!--          <li class="footer__links__grep">|</li>-->
 
-          <li class="footer__links__list">
-            <a href="#">防骗秘籍</a>
-          </li>
-        </ul>
-      </el-row>
+<!--          <li class="footer__links__list">-->
+<!--            <a href="#">防骗秘籍</a>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </el-row>-->
     </div>
 
 <!--    <div class="footer__info">-->
