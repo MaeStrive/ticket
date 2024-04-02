@@ -27,10 +27,15 @@
                   <el-input v-model="formLabelAlign.username" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="年龄">
-                  <el-input v-model="formLabelAlign.age"></el-input>
+                  <el-input v-model="formLabelAlign.age" @input="handleInput"></el-input>
+                  <!--                  <el-input-number v-model="formLabelAlign.age" @change="handleChange" :min="1" :max="10" label="年龄"></el-input-number>-->
                 </el-form-item>
                 <el-form-item label="性别">
-                  <el-input v-model="formLabelAlign.sex"></el-input>
+                  <!--                  <el-input v-model="formLabelAlign.sex"></el-input>-->
+                  <el-select v-model="formLabelAlign.sex" placeholder="请选择性别">
+                    <el-option label="男" value="男"></el-option>
+                    <el-option label="女" value="女"></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="邮箱">
                   <el-input v-model="formLabelAlign.email"></el-input>
@@ -115,6 +120,7 @@ export default {
         oldpassword: '',
         id: '',
       },
+
       activeName: 'first'
     }
   },
@@ -128,6 +134,14 @@ export default {
       const minutes = String(date.getMinutes()).padStart(2, '0');
 
       return `${year}-${month}-${day} ${hours}:${minutes}`;
+    },
+    isValidEmail(email) {
+      // 使用正则表达式匹配邮箱格式
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return emailPattern.test(email);
+    },
+    handleInput() {
+      this.formLabelAlign.age = this.formLabelAlign.age.replace(/\D/g, '');
     },
     showInfo(id) {
       console.log(id)
@@ -169,6 +183,10 @@ export default {
     },
     edit() {
       if (confirm("您确定要修改吗？")) {
+        if (!this.isValidEmail(this.formLabelAlign.email)){
+          alert("邮箱格式不正确")
+          return
+        }
         request.post('/commonUser/editInfo', this.formLabelAlign).then(res => {
           if (res.code == 0) alert("修改成功!")
           this.$store.commit("setUserInfo", res.data)
@@ -188,9 +206,9 @@ export default {
           request.post('/commonUser/editPassword', this.pasd).then(res => {
             if (res.code == 0) {
               alert("修改成功!")
-              this.pasd.oldpassword=''
-              this.pasd.newpassword=''
-              this.pasd.renewpassword=''
+              this.pasd.oldpassword = ''
+              this.pasd.newpassword = ''
+              this.pasd.renewpassword = ''
             } else {
               alert(res.msg)
             }
