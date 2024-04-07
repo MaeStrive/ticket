@@ -4,11 +4,11 @@
       title="详情"
       :visible.sync="dialogVisible"
       width="30%">
-      <div><b>演出名称：</b>{{detailinfo.name}}</div>
-      <div><b>单价：</b>￥{{detailinfo.price}}</div>
-      <div><b>数量：</b>{{detailinfo.amount}}张</div>
-      <div><b>展出时间：</b>{{formatDate(detailinfo.showtime)}}</div>
-      <div><b>展出地址：</b>{{ detailinfo.address}}</div>
+      <div><b>演出名称：</b>{{ detailinfo.name }}</div>
+      <div><b>单价：</b>￥{{ detailinfo.price }}</div>
+      <div><b>数量：</b>{{ detailinfo.amount }}张</div>
+      <div><b>展出时间：</b>{{ formatDate(detailinfo.showtime) }}</div>
+      <div><b>展出地址：</b>{{ detailinfo.address }}</div>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -31,8 +31,13 @@
               &emsp;<el-tag v-if="order.status=='待支付'" type="danger">{{ order.status }}</el-tag>
               <el-tag v-else-if="order.status=='已支付'" type="success">{{ order.status }}</el-tag>
               <el-tag v-else-if="order.status=='取消支付'" type="info">{{ order.status }}</el-tag>
+              <el-tag v-else-if="order.status=='已退款'">{{ order.status }}</el-tag>
               &emsp;<el-button size="small" @click="showInfo(order.id)">查看详情</el-button>
-              &emsp;<el-button size="small" type="info" v-if="order.status=='待支付'" @click="ljzf(order.id,'取消支付')">取消支付</el-button>
+              &emsp;<el-button size="small" type="info" v-if="order.status=='待支付'"
+                               @click="ljzf(order.id,'取消支付')">取消支付
+            </el-button>
+              &emsp;<el-button size="small" v-if="order.status=='已支付'" @click="ljzf(order.id,'已退款')">退款
+            </el-button>
               &emsp;<el-button size="small" type="warning" v-if="order.status=='待支付'"
                                @click="ljzf(order.id,'已支付')">
               立即支付
@@ -74,13 +79,13 @@ export default {
     },
     showInfo(id) {
       console.log(id)
-      request.get('/orderDetail/getOrderDetail', {params:{id: id}}).then(res => {
+      request.get('/orderDetail/getOrderDetail', {params: {id: id}}).then(res => {
         this.detailinfo = res.data
       })
       this.dialogVisible = true
     },
     ljzf(id, str) {
-      if (confirm("您确定进行"+(str=='已支付'?'支付':str)+"吗?")) {
+      if (confirm("您确定进行" + (str == '已支付' ? '支付' : str == '已退款' ? '退款' : str) + "吗?")) {
         let orderInfo = {
           id: id,
           status: str,
